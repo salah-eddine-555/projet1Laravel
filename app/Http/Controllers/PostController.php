@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Post;
+use App\Models\Categorie;
 
 use Illuminate\Http\Request;
 
@@ -21,24 +22,27 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("post.create");
+        $categories = Categorie::all();
+        return view("posts.create", compact("categories"));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     //
-    //     $validated = $request->validate([
-    //         'titre'=> 'string|max:255',
-    //         'content'=> 'text',
-    //     ]);
+    public function store(Request $request)
+    {
+        //
+        $validated = $request->validate([
+            'titre'=> 'required|string|max:255',
+            'content'=> 'required|string',
+            'categorie_id' => 'required|exists:categories,id',
+        ]);
 
-    //     Post::create($validated);
+        Post::create($validated);
+       
 
-    //     return redirect()->route('posts.index');
-    // }
+        return redirect()->route('posts.index');
+    }
 
     /**
      * Display the specified resource.
@@ -51,9 +55,10 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
-    {   
-        return views('posts.edit', compact('post'));
+    public function edit(Post $post,Categorie $categorie)
+    {       
+       $categories = Categorie::all();
+        return view('posts.edit', compact(['post', 'categorie','categories']));
         
     }
 
@@ -65,29 +70,22 @@ class PostController extends Controller
         //
         $validated = $request->validate([
             'titre'=> 'string|max:255',
-            'content'=> 'text',
+            'content'=> 'required|string',
+            'categorie_id' => 'required|exists:categories,id',
         ]);
 
+        $post->update($validated);
+
+        return redirect()->route('posts.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('posts.index');
     }
 
-
-    public function create(Request $request){
-
-        $validated  = $request->validate([
-            'titre'=> "string|min:30|max:255"
-        ]);
-
-        Post::create($validated);
-
-        return redirect()->route('index.posts');
-
-    }
 }
