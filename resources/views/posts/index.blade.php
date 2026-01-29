@@ -70,6 +70,10 @@
 
     @foreach($posts as $post)
         <div class="container post-card">
+            <div class="card-head h-25">
+               <img src="{{ asset('storage/' . ($post->image ?? 'images/DefaultImage.jpg')) }}" alt="{{ $post->titre }}" />
+>
+            </div>
             <div class="post-info">
                 <h3>Titre: {{ $post->titre }}</h3>
                 <h4>Contenu: {{ $post->content }}</h4>

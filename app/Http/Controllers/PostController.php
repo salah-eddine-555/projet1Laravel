@@ -36,8 +36,21 @@ class PostController extends Controller
             'titre'=> 'required|string|max:255',
             'content'=> 'required|string',
             'categorie_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048'
         ]);
+        
 
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $name = time().'_'.$file->getClientOriginalName();
+            $path = $file->storeAs('images', $name, 'public');
+            $validated['image'] = $path;
+            // dd($file);
+            // dd($name);   
+        }
+        
+        
+        
         Post::create($validated);
        
 

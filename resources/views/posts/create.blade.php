@@ -17,15 +17,15 @@
     <div class="container mt-5">
         <h2>Ajouter Post</h2>
         <hr>
-        <form action="{{ route('posts.store')}}" class="mt-5" method="POST">
+        <form action="{{ route('posts.store')}}" class="mt-5" method="POST" enctype="multipart/form-data">
              @csrf
             <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Titre :</label>
-                    <input type="email" name="titre" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="text" name="titre" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label">Content :</label>
-                  <input type="password" name="content" class="form-control" id="exampleInputPassword1">
+                  <input type="text" name="content" class="form-control" id="exampleInputPassword1">
             </div>
            <select name="categorie_id" class="form-select" aria-label="Default select example">
                 <option selected>Choisir une catégorie</option>
@@ -33,6 +33,9 @@
                     <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
                 @endforeach
             </select>
+            <div class="mb-3">
+                <input type="file" name="image">
+            </div>
             <div class="mt-4 w-100">
                 <button type="submit" class="btn btn-primary w-25">Cree</button>
                 <button class="btn btn-secondary w-25"><a href="{{ route('posts.index') }}">Retour</a></button>
