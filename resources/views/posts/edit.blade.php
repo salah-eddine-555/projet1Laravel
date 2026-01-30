@@ -17,7 +17,7 @@
         <div class="container mt-5">
             <h2>Modifier Post</h2>
             <hr>
-            <form action="{{ route('posts.update', $post) }}" class="mt-5" method="POST">
+            <form action="{{ route('posts.update', $post) }}" class="mt-5" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -33,7 +33,10 @@
                     @foreach($categories as $categorie)
                         <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
                     @endforeach
-                </select>
+            </select>
+             <div class="mb-5">
+                <input type="file" name="image" src="{{$post->image}}">
+            </div>
                 <div class="mt-4 w-100">
                     <button type="submit" class="btn btn-primary w-25">Modifier</button>
                     <button class="btn btn-secondary w-25"><a href="{{ route('posts.index') }}">Retour</a></button>

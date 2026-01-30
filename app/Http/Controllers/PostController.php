@@ -17,6 +17,13 @@ class PostController extends Controller
         return view("posts.index", compact("posts"));
     }
 
+    // public function filtrage(Post $post,Categorie $categorie){
+
+    //     $postsFiltres = Post::all()->where($post->categorie->name);
+    //     return view("posts.index", compact('postsFiltres'));
+
+    // }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -47,9 +54,7 @@ class PostController extends Controller
             $validated['image'] = $path;
             // dd($file);
             // dd($name);   
-        }
-        
-        
+        }  
         
         Post::create($validated);
        
@@ -68,10 +73,10 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post,Categorie $categorie)
+    public function edit(Post $post)
     {       
        $categories = Categorie::all();
-        return view('posts.edit', compact(['post', 'categorie','categories']));
+        return view('posts.edit', compact(['post','categories']));
         
     }
 
@@ -86,6 +91,12 @@ class PostController extends Controller
             'content'=> 'required|string',
             'categorie_id' => 'required|exists:categories,id',
         ]);
+         if($request->hasFile('image')){
+            $file = $request->file('image');
+            $name = time().'_'.$file->getClientOriginalName();
+            $path = $file->storeAs('images', $name, 'public');
+            $validated['image'] = $path; 
+        }  
 
         $post->update($validated);
 
